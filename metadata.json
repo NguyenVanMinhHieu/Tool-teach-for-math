@@ -1,6 +1,6 @@
 {
-  "name": "TikZ Geometry Explorer",
-  "description": "A refined LaTeX and TikZ visualizer for 3D geometry exercises with integrated TTS and detailed solutions.",
+  "name": "Công cụ dạy-học Toán",
+  "description": "Hệ thống hỗ trợ dạy và học Toán chuyên sâu, tích hợp trình trực quan hóa TikZ, giải bài tập tương tác và trợ lý AI.",
   "requestFramePermissions": [],
   "majorCapabilities": []
 }

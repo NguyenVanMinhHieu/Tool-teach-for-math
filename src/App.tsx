@@ -48,31 +48,31 @@ interface Choice {
 const choicesData: Choice[] = [
   { 
     id: 'a', 
-    text: 'Đường thẳng $AB$ có một vectơ chỉ phương là $\\vec{u} = (2; -3; 3)$', 
-    isTrue: true,
-    solution: 'Vectơ $\\vec{AB} = (0-2; 3-0; -3-(-0)) = (-2; 3; -3)$. Suy ra vectơ chỉ phương $\\vec{u} = -\\vec{AB} = (2; -3; 3)$. (Đúng)'
+    text: 'Hàm số đồng biến trên khoảng $(-\\infty; 3)$', 
+    isTrue: false,
+    solution: 'Dựa vào bảng biến thiên, trên khoảng $(-\\infty; -2)$ hàm số đồng biến, nhưng trên khoảng $(-2; 0)$ hàm số nghịch biến. Khoảng $(-\\infty; 3)$ chứa cả khoảng đồng biến và nghịch biến. (Sai)'
   },
   { 
     id: 'b', 
-    text: 'Mặt trung trực của đoạn thẳng $AB$ có phương trình là $2x - 3y + 3z + 11 = 0$', 
-    isTrue: true,
-    solution: 'Trung điểm đoạn thẳng $AB$ là $I(1; 1.5; -1.5)$. Vectơ pháp tuyến là $\\vec{AB} = (-2; 3; -3)$. Phương trình mặt trung trực: $-2(x-1) + 3(y-1.5) - 3(z+1.5) = 0 \\Leftrightarrow 2x - 3y + 3z + 11 = 0$. (Đúng)'
+    text: 'Hàm số đồng biến trên khoảng $(-1; 3)$', 
+    isTrue: false,
+    solution: 'Khoảng $(-1; 3)$ chứa điểm $x=0$ và $x=2$. Ta thấy trên $(-1; 0)$ hàm số nghịch biến, trên $(0; 2)$ đồng biến, và trên $(2; 3)$ nghịch biến. (Sai)'
   },
   { 
     id: 'c', 
-    text: 'Tiếp diện của mặt cầu $(S)$ tại điểm $M(-2; -3; 1)$ có phương trình là $3x - z + 7 = 0$', 
+    text: 'Hàm số nghịch biến trên khoảng $(-2; 0)$', 
     isTrue: true,
-    solution: 'Tâm mặt cầu $I(1; -3; 0)$. Vectơ pháp tuyến tại $M$ là $\\vec{IM} = (-2-1; -3-(-3); 1-0) = (-3; 0; 1)$. Phương trình tiếp diện: $-3(x+2) + 0(y+3) + 1(z-1) = 0 \\Leftrightarrow 3x - z + 7 = 0$. (Đúng)'
+    solution: 'Dựa vào hàng $f\'(x)$, ta thấy trên khoảng $(-2; 0)$ thì $f\'(x)$ mang dấu âm $(-)$. Do đó hàm số nghịch biến trên khoảng $(-2; 0)$. (Đúng)'
   },
   { 
     id: 'd', 
-    text: 'Mặt cầu đi qua $A, B, O$ có tâm thuộc mặt phẳng $(P)$ có phương trình là $(x-1)^2 + y^2 + (z+3)^2 = 10$', 
-    isTrue: true,
-    solution: 'Tâm $J(1; 0; -3)$ thuộc $(P): x + y + z + 2 = 0$. Kiểm tra $JO=JA=JB=\\sqrt{10}$. Phương trình mặt cầu $(x-1)^2 + y^2 + (z+3)^2 = 10$. (Đúng)'
+    text: 'Hàm số nghịch biến trên khoảng $(-2; 2)$', 
+    isTrue: false,
+    solution: 'Trên khoảng $(-2; 0)$ hàm số nghịch biến, nhưng trên khoảng $(0; 2)$ hàm số lại đồng biến ($f\'(x) > 0$). (Sai)'
   },
 ];
 
-const exerciseText = `Trong không gian $Oxyz$, cho hai điểm $A(2;0;0)$, $B(0;3;-3)$ và mặt cầu $(S): (x-1)^2 + (y+3)^2 + z^2 = 10$.`;
+const exerciseText = `Cho hàm số $y = f(x)$ có bảng biến thiên như sau. Mệnh đề nào sau đây đúng?`;
 
 export default function App() {
   const [isPlaying, setIsPlaying] = useState(false);
@@ -110,46 +110,12 @@ export default function App() {
     return new Blob([header, pcmData], { type: 'audio/wav' });
   };
 
-  const tikzCode = `\\begin{tikzpicture}[scale=0.8, font=\\footnotesize, line join=round, line cap=round, >=Stealth]
-    % 1. Thư viện (nên để ở preamble nếu dùng file .tex rời)
-    % \\usetikzlibrary{arrows.meta, calc, intersections, angles, quotes}
-    
-    % 2. Khai báo tọa độ tĩnh
-    \\path (0,0,0) coordinate (O)
-          (2,0,0) coordinate (A)
-          (0,3,-3) coordinate (B)
-          (1,-3,0) coordinate (I)
-          (-2,-3,1) coordinate (M)
-          (1,0,-3) coordinate (J);
-    
-    % 3. Vẽ trục tọa độ
-    \\draw[->] (-3,0,0) -- (4,0,0) node[right] {$x$};
-    \\draw[->] (0,-4,0) -- (0,4,0) node[above] {$y$};
-    \\draw[->] (0,0,-4) -- (0,0,4) node[left] {$z$};
-    
-    % 4. Vẽ mặt cầu (S) dùng node hoặc circle
-    \\node[draw, circle, minimum size=5.05cm, dashed, opacity=0.3] at (I) {};
-    % Elips biểu diễn chiều sâu
-    \\draw[dashed, opacity=0.4] (I) ellipse (2.52cm and 0.8cm);
-    \\draw[thick] (I) ++(2.52,0) arc (0:180:2.52 and 0.8cm);
-    
-    % 5. Mặt cầu qua O, A, B (Sphere J)
-    \\node[draw, blue!40, circle, minimum size=5.1cm, dashed, opacity=0.2] at (J) {};
-    
-    % 6. Vẽ các điểm bằng vòng lặp
-    \\foreach \\p in {O,A,B,I,M,J} \\fill (\\p) circle (1.5pt);
-    
-    % 7. Gán nhãn bằng vòng lặp
-    \\foreach \\p/\\pos in {O/below left, A/above right, B/right, I/below left, M/left, J/below right} 
-        \\node[\\pos] at (\\p) {$\\p$};
-    
-    % 8. Vẽ các cạnh/đường nối
-    \\foreach \p in {A,B,I,M,J} \\draw[thin, opacity=0.2] (O)--(\\p);
-    \\draw[thick, blue] (A) -- (B);
-    \\draw[dashed, red, thick] (I) -- (M);
-    
-    % 9. Ký hiệu góc vuông (tại M nếu tiếp tuyến) - chỉ minh họa
-    % \\pic [draw, angle radius=0.2cm] {right angle = I--M--?};
+  const tikzCode = `\\begin{tikzpicture}
+    \\tkzTabInit[lgt=1, espcl=2]
+    {$x$ / 0.7, $f'(x)$ / 0.7, $f(x)$ / 1.5}%
+    {$-\\infty$, $-2$, $0$, $2$, $+\infty$}%
+    \\tkzTabLine{,+,z,-,z,+,z,-,}%
+    \\tkzTabVar{-/ $-\\infty$, +/ 3, -/ -1, +/ 3, -/ $-\\infty$}%
 \\end{tikzpicture}`;
 
   const handleTTS = async () => {
@@ -252,10 +218,10 @@ export default function App() {
       <header className="px-10 py-10 flex flex-col md:flex-row justify-between items-baseline border-b border-border gap-6">
         <div>
           <div className="text-[12px] font-mono tracking-[0.2em] uppercase text-muted mb-2">
-            Dự án 2025 &mdash; [12H3-1]
+            Công cụ dạy-học Toán &mdash; [Dự án 2025]
           </div>
           <div className="font-serif italic text-lg text-ink">
-            Hình học không gian Oxyz
+            Trình giải toán & Trực quan hóa TikZ
           </div>
         </div>
         
@@ -288,16 +254,90 @@ export default function App() {
         </div>
       </header>
 
-      <main className="flex-1 grid grid-cols-1 lg:grid-cols-[1fr_420px]">
+      <main className="flex-1 grid grid-cols-1 md:grid-cols-[1fr_400px]">
         {/* Left Section: Problem & Choices & TikZ */}
-        <div className="p-10 lg:p-14 border-b lg:border-b-0 lg:border-r border-border space-y-12 shrink-0">
+        <div className="p-8 md:p-12 border-b md:border-b-0 md:border-r border-border space-y-12">
           {/* Problem Statement */}
-          <section>
-            <h1 className="font-serif text-3xl leading-[1.5] text-ink max-w-3xl">
-              <span className="editorial-math-bg">
-                <FormattedMath text={exerciseText} />
-              </span>
-            </h1>
+          <section className="space-y-10">
+            <div className="space-y-4">
+              <h1 className="font-serif text-3xl leading-[1.5] text-ink max-w-3xl">
+                <span className="editorial-math-bg">
+                  <FormattedMath text={exerciseText} />
+                </span>
+              </h1>
+              
+              {/* Variations Table Visualization */}
+              <div className="max-w-2xl bg-paper-alt border border-border p-6 rounded-xs shadow-sm shadow-ink/5">
+                <div className="text-[10px] uppercase tracking-[0.2em] text-muted mb-4 border-b border-border/50 pb-2">
+                  Bảng biến thiên mẫu (Sử dụng tkz-tab)
+                </div>
+                <div className="relative overflow-x-auto bg-white rounded-xs border border-border/50 shadow-inner">
+                  <svg viewBox="0 0 450 180" className="w-full min-w-[400px] h-auto p-4 font-mono text-ink">
+                    {/* Rows Definition */}
+                    <line x1="10" y1="45" x2="440" y2="45" stroke="#D1D1CB" strokeWidth="1" />
+                    <line x1="10" y1="85" x2="440" y2="85" stroke="#D1D1CB" strokeWidth="1" />
+                    <line x1="80" y1="10" x2="80" y2="170" stroke="#D1D1CB" strokeWidth="2" />
+                    
+                    {/* Labels */}
+                    <text x="35" y="32" fontSize="14" fill="currentColor" textAnchor="middle" fontWeight="bold">x</text>
+                    <text x="35" y="70" fontSize="14" fill="currentColor" textAnchor="middle" fontWeight="bold">f'(x)</text>
+                    <text x="35" y="130" fontSize="14" fill="currentColor" textAnchor="middle" fontWeight="bold">f(x)</text>
+                    
+                    {/* X Values & Vertical Lines */}
+                    {[
+                      { x: 100, val: '-∞' },
+                      { x: 180, val: '-2', line: true },
+                      { x: 260, val: '0', line: true },
+                      { x: 340, val: '2', line: true },
+                      { x: 420, val: '+∞' }
+                    ].map((item, i) => (
+                      <g key={i}>
+                        <text x={item.x} y={32} fontSize="12" fill="currentColor" textAnchor="middle">{item.val}</text>
+                        {item.line && (
+                          <line x1={item.x} y1="45" x2={item.x} y2="170" stroke="#D1D1CB" strokeDasharray="4 4" opacity="0.5" />
+                        )}
+                      </g>
+                    ))}
+                    
+                    {/* f' Signs */}
+                    {[
+                      { x: 140, sign: '+' },
+                      { x: 180, sign: '0' },
+                      { x: 220, sign: '-' },
+                      { x: 260, sign: '0' },
+                      { x: 300, sign: '+' },
+                      { x: 340, sign: '0' },
+                      { x: 380, sign: '-' }
+                    ].map((item, i) => (
+                      <text key={i} x={item.x} y={70} fontSize="14" fill="currentColor" textAnchor="middle" fontWeight={item.sign === '0' ? 'bold' : 'normal'}>
+                        {item.sign}
+                      </text>
+                    ))}
+                    
+                    {/* f(x) Variations */}
+                    {/* Arrows */}
+                    <defs>
+                      <marker id="arrowhead" markerWidth="6" markerHeight="4" refX="5" refY="2" orientation="auto">
+                        <polygon points="0 0, 6 2, 0 4" fill="#2D5D7B" />
+                      </marker>
+                    </defs>
+                    
+                    {/* Arrow path: -inf -> 3 -> -1 -> 3 -> -inf */}
+                    <path d="M 100 160 L 175 105" fill="none" stroke="#2D5D7B" strokeWidth="1.5" markerEnd="url(#arrowhead)" />
+                    <path d="M 185 105 L 255 155" fill="none" stroke="#2D5D7B" strokeWidth="1.5" markerEnd="url(#arrowhead)" />
+                    <path d="M 265 155 L 335 105" fill="none" stroke="#2D5D7B" strokeWidth="1.5" markerEnd="url(#arrowhead)" />
+                    <path d="M 345 105 L 420 160" fill="none" stroke="#2D5D7B" strokeWidth="1.5" markerEnd="url(#arrowhead)" />
+                    
+                    {/* Y Values */}
+                    <text x="100" y="170" fontSize="12" fill="black" textAnchor="middle">-∞</text>
+                    <text x="180" y="100" fontSize="12" fill="black" textAnchor="middle" fontWeight="bold">3</text>
+                    <text x="260" y="165" fontSize="12" fill="black" textAnchor="middle" fontWeight="bold">-1</text>
+                    <text x="340" y="100" fontSize="12" fill="black" textAnchor="middle" fontWeight="bold">3</text>
+                    <text x="420" y="170" fontSize="12" fill="black" textAnchor="middle">-∞</text>
+                  </svg>
+                </div>
+              </div>
+            </div>
           </section>
 
           {/* New Interactive Choices Grid */}
@@ -354,12 +394,12 @@ export default function App() {
             </div>
           </section>
 
-          {/* TikZ Visual */}
+          {/* TikZ Visual (Code only) */}
           <section className="pt-12 border-t border-border">
              <div className="flex items-end justify-between mb-8">
                <div className="text-[11px] font-bold uppercase tracking-[0.1em] text-muted flex items-center gap-2">
                  <span className="h-[1px] w-6 bg-border"></span>
-                 Visualizer Preview (Points: A, B, O, I, M, J)
+                 Mã nguồn TikZ (Preamble: {'\\usepackage{tkz-tab}'})
                </div>
                <button 
                 onClick={copyToClipboard}
@@ -370,43 +410,17 @@ export default function App() {
               </button>
              </div>
              
-             <div className="flex flex-col md:flex-row gap-8 items-stretch">
-                <div className="flex-1 aspect-video bg-paper-alt border border-border rounded-xs flex items-center justify-center relative group">
-                  <div className="absolute inset-0 opacity-10 bg-[url('https://www.transparenttextures.com/patterns/notebook.png')]"></div>
-                  {/* SVG Mockup */}
-                  <svg viewBox="0 0 200 200" className="w-full h-full p-4 text-accent/60 drop-shadow-sm">
-                    {/* Sphere S (tâm I) */}
-                    <circle cx="100" cy="110" r="60" fill="none" stroke="currentColor" strokeDasharray="4 2" />
-                    <ellipse cx="100" cy="110" rx="60" ry="20" fill="none" stroke="currentColor" strokeDasharray="4 2" />
-                    
-                    {/* Sphere tâm J */}
-                    <circle cx="100" cy="80" r="60" fill="none" stroke="#2D5D7B" strokeOpacity="0.3" strokeDasharray="2 1" />
-                    
-                    {/* Lines */}
-                    <line x1="120" y1="40" x2="80" y2="150" stroke="currentColor" strokeWidth="2" />
-                    <line x1="100" y1="110" x2="60" y2="120" stroke="#C62828" strokeDasharray="3 3" />
-                    
-                    {/* Points */}
-                    <circle cx="100" cy="110" r="3" fill="currentColor" /> <text x="105" y="115" fontSize="8" fill="currentColor">I</text>
-                    <circle cx="60" cy="120" r="3" fill="#C62828" /> <text x="50" y="115" fontSize="8" fill="#C62828">M</text>
-                    <circle cx="100" cy="80" r="3" fill="#2D5D7B" /> <text x="105" y="75" fontSize="8" fill="#2D5D7B">J</text>
-                    <circle cx="120" cy="40" r="3" fill="black" /> <text x="125" y="38" fontSize="8" fill="black">A</text>
-                    <circle cx="80" cy="150" r="3" fill="black" /> <text x="70" y="155" fontSize="8" fill="black">B</text>
-                    <circle cx="100" cy="100" r="3" fill="black" /> <text x="105" y="95" fontSize="8" fill="black">O</text>
-                  </svg>
-                </div>
-                <div className="w-full md:w-56 bg-ink p-4 rounded-xs text-[9px] font-mono text-white/50 overflow-hidden relative">
-                  <div className="absolute top-0 right-0 p-2 text-white/20"><Code size={12} /></div>
-                  <div className="max-h-60 overflow-y-auto custom-scrollbar pr-2">
-                    <pre className="whitespace-pre-wrap">{tikzCode}</pre>
-                  </div>
+             <div className="w-full bg-ink p-6 rounded-xs text-[11px] font-mono text-white/70 overflow-hidden relative">
+                <div className="absolute top-0 right-0 p-3 text-white/10"><Code size={16} /></div>
+                <div className="max-h-60 overflow-y-auto custom-scrollbar pr-2">
+                  <pre className="whitespace-pre-wrap">{tikzCode}</pre>
                 </div>
              </div>
           </section>
         </div>
 
         {/* Right Section: Detailed Solution */}
-        <aside className="bg-paper-alt p-10 lg:p-14 lg:sticky lg:top-0 h-fit border-l border-border">
+        <aside className="bg-paper-alt p-8 md:p-12 md:sticky md:top-0 h-fit border-l border-border">
           <div className="flex items-center gap-4 mb-10 group">
              <h2 className="font-serif italic text-2xl text-accent">Lời giải đầy đủ</h2>
              <div className="h-px flex-1 bg-border group-hover:bg-accent/40 transition-colors"></div>
